@@ -9,6 +9,7 @@ const PhotosPage = () => {
   const navigate = useNavigate();
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showScatteredPhotos, setShowScatteredPhotos] = useState(false);
+  const [viewedPhotos, setViewedPhotos] = useState<number[]>([]);
   
   // Array of photo URLs
   const photos = [
@@ -29,16 +30,16 @@ const PhotosPage = () => {
   }));
 
   const handleSwipe = () => {
+    const newViewedPhotos = [...viewedPhotos, currentPhotoIndex];
+    setViewedPhotos(newViewedPhotos);
+    
     if (currentPhotoIndex < photos.length - 1) {
       setCurrentPhotoIndex(currentPhotoIndex + 1);
     } else {
-      // Show scattered photos when all photos have been swiped
-      setShowScatteredPhotos(true);
-      
-      // Navigate to compliments page after a delay
+      // Navigate to compliments page when all photos have been viewed
       setTimeout(() => {
         navigate('/compliments');
-      }, 3000);
+      }, 2000);
     }
   };
 
@@ -49,7 +50,7 @@ const PhotosPage = () => {
       
       <div className="w-full max-w-sm aspect-[3/4] relative photo-stack mx-auto">
         {photos.map((photo, index) => (
-          showScatteredPhotos ? (
+          viewedPhotos.includes(index) ? (
             <PhotoCard 
               key={index}
               imageSrc={photo}
@@ -72,7 +73,7 @@ const PhotosPage = () => {
       </div>
       
       {!showScatteredPhotos && (
-        <p className="mt-4 text-love-700 text-lg font-medium font-playfair text-center">
+        <p className="mt-4 text-love-700 text-lg font-medium text-center">
           Photo {currentPhotoIndex + 1} of {photos.length}
         </p>
       )}

@@ -47,6 +47,12 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
+      style={{
+        transformStyle: "preserve-3d",
+        perspective: "1000px",
+        transform: "translateZ(20px)",
+        boxShadow: "0px 20px 40px -10px rgba(0, 0, 0, 0.4)"
+      }}
     >
       <div className="flex justify-center mb-6">
         {[...Array(5)].map((_, i) => (
@@ -54,6 +60,7 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
             key={i}
             animate={{ 
               y: [0, -10, 0],
+              rotateY: [0, 10, 0]
             }}
             transition={{ 
               duration: 1, 
@@ -61,21 +68,24 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
               repeatType: "reverse",
               delay: i * 0.1
             }}
+            style={{ transformStyle: "preserve-3d" }}
           >
             <Heart 
               className="text-love-600 w-8 h-8 mx-1" 
               fill="#FFC2C7" 
+              style={{ filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2))" }}
             />
           </motion.div>
         ))}
       </div>
       
-      <h1 className="text-4xl mb-6 font-dancing text-love-800">Yay! 🎉</h1>
+      <h1 className="text-4xl mb-6 text-love-800">Yay! 🎉</h1>
       <p className="text-xl mb-8">You've made me the happiest person!</p>
       
       <button
         onClick={onContinue}
-        className="heart-button bg-love-600 hover:bg-love-700 group"
+        className="heart-button bg-love-600 hover:bg-love-700 group shadow-xl hover:-translate-y-1 transition-all duration-300"
+        style={{ transform: "translateZ(30px)" }}
       >
         <span>Message me now</span>
         <Heart 

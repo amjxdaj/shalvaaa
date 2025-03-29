@@ -42,7 +42,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   if (isScattered && scatterPosition) {
     return (
       <motion.div 
-        className="romantic-card photo-card absolute"
+        className="romantic-card photo-card absolute shadow-2xl"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ 
           opacity: 1, 
@@ -63,7 +63,8 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
           height: "120px",
           position: "absolute",
           top: "calc(50% - 150px)",
-          left: "calc(50% - 40px)"
+          left: "calc(50% - 40px)",
+          boxShadow: "0px 10px 25px -5px rgba(0, 0, 0, 0.45)"
         }}
       >
         <img 
@@ -77,7 +78,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
 
   return (
     <motion.div 
-      className={`romantic-card photo-card absolute inset-0 ${isActive ? 'z-10' : '-z-10'}`}
+      className={`romantic-card photo-card absolute inset-0 ${isActive ? 'z-10' : '-z-10'} transform-gpu`}
       drag={isActive ? true : false} // Allow drag in all directions
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={0.7}
@@ -90,15 +91,21 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
         opacity: swipeDirection ? 0 : 1,
       }}
       transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.02, boxShadow: "0px 15px 30px -5px rgba(0, 0, 0, 0.5)" }}
+      style={{
+        transformStyle: "preserve-3d", 
+        perspective: "1000px",
+        boxShadow: "0px 10px 25px -5px rgba(0, 0, 0, 0.3)"
+      }}
     >
       <img 
         src={imageSrc} 
         alt="Special photo" 
-        className="w-full h-full object-cover object-center"
+        className="w-full h-full object-cover object-center rounded-lg"
       />
       {isActive && (
         <div className="absolute bottom-4 left-0 right-0 text-center">
-          <p className="text-white text-lg font-medium px-4 py-2 bg-black/30 backdrop-blur-sm rounded-lg inline-block font-playfair">
+          <p className="text-white text-lg font-medium px-4 py-2 bg-black/30 backdrop-blur-sm rounded-lg inline-block">
             Tap or swipe
           </p>
         </div>

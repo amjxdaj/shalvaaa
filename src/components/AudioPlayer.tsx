@@ -17,7 +17,14 @@ const AudioPlayer: React.FC = () => {
       document.removeEventListener('click', playAudio);
     };
     
-    document.addEventListener('click', playAudio);
+    // Try to play audio automatically (may be blocked by browser)
+    audio.play().then(() => {
+      setPlaying(true);
+    }).catch(error => {
+      console.log("Auto-play failed, waiting for user interaction:", error);
+      // Fallback to play on first interaction
+      document.addEventListener('click', playAudio);
+    });
     
     return () => {
       audio.pause();
@@ -38,10 +45,17 @@ const AudioPlayer: React.FC = () => {
   return (
     <button 
       onClick={togglePlay} 
-      className="fixed bottom-4 right-4 z-50 p-2 bg-white/80 backdrop-blur-md rounded-full shadow-lg"
+      className="fixed bottom-4 right-4 z-50 p-3 bg-white/80 backdrop-blur-md rounded-full shadow-2xl hover:scale-110 transition-transform"
       aria-label={playing ? "Mute music" : "Play music"}
+      style={{ 
+        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.3)",
+        transform: playing ? "rotate(0deg)" : "rotate(-10deg)"
+      }}
     >
-      {playing ? <Volume2 size={24} className="text-love-600" /> : <VolumeX size={24} className="text-gray-600" />}
+      {playing ? 
+        <Volume2 size={24} className="text-love-600" style={{ filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))" }} /> : 
+        <VolumeX size={24} className="text-gray-600" style={{ filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))" }} />
+      }
     </button>
   );
 };
