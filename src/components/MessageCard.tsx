@@ -45,22 +45,24 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onContinue }) => {
       >
         {message}
       </h2>
-      <button
-        onClick={onContinue}
-        className="heart-button group bg-gradient-to-r from-love-500 to-love-600 hover:from-love-600 hover:to-love-700"
-        style={{ 
-          transform: "translateZ(50px)",
-          boxShadow: "0 15px 30px -8px rgba(255, 77, 94, 0.5)",
-          borderRadius: "50px",
-          transition: "all 0.3s ease"
-        }}
-      >
-        <span className="font-montserrat font-bold">Continue</span> 
-        <Heart 
-          className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
-          fill="#FFF"
-        />
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={onContinue}
+          className="heart-button group bg-gradient-to-r from-love-500 to-love-600 hover:from-love-600 hover:to-love-700"
+          style={{ 
+            transform: "translateZ(50px)",
+            boxShadow: "0 15px 30px -8px rgba(255, 77, 94, 0.5)",
+            borderRadius: "50px",
+            transition: "all 0.3s ease"
+          }}
+        >
+          <span className="font-montserrat font-bold">Continue</span> 
+          <Heart 
+            className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
+            fill="#FFF"
+          />
+        </button>
+      </div>
     </motion.div>
   );
 };

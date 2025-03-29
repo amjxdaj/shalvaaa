@@ -28,11 +28,20 @@ const PhotosPage = () => {
   }));
 
   const handleSwipe = () => {
+    // Immediately mark current photo as viewed
     const newViewedPhotos = [...viewedPhotos, currentPhotoIndex];
     setViewedPhotos(newViewedPhotos);
     
+    // Add a slight delay before moving to next photo to allow for scatter animation
     if (currentPhotoIndex < photos.length - 1) {
-      setCurrentPhotoIndex(currentPhotoIndex + 1);
+      // Preload next image to prevent loading issues
+      const nextImg = new Image();
+      nextImg.src = photos[currentPhotoIndex + 1];
+      
+      // Short timeout to ensure smooth transition
+      setTimeout(() => {
+        setCurrentPhotoIndex(currentPhotoIndex + 1);
+      }, 100);
     } else {
       // Navigate to compliments page when all photos have been viewed
       setTimeout(() => {
@@ -46,10 +55,11 @@ const PhotosPage = () => {
       <AudioPlayer />
       
       <div className="w-full max-w-sm aspect-[3/4] relative photo-stack mx-auto">
+        {/* Render scattered photos first */}
         {photos.map((photo, index) => (
-          viewedPhotos.includes(index) ? (
+          viewedPhotos.includes(index) && (
             <PhotoCard 
-              key={index}
+              key={`scattered-${index}`}
               imageSrc={photo}
               onSwipe={() => {}}
               isActive={false}
@@ -57,9 +67,14 @@ const PhotosPage = () => {
               isScattered={true}
               scatterPosition={scatterPositions[index]}
             />
-          ) : (
+          )
+        ))}
+        
+        {/* Render active photo stack */}
+        {photos.map((photo, index) => (
+          !viewedPhotos.includes(index) && (
             <PhotoCard 
-              key={index}
+              key={`stack-${index}`}
               imageSrc={photo}
               onSwipe={handleSwipe}
               isActive={index === currentPhotoIndex}

@@ -41,21 +41,23 @@ const Index = () => {
           I've created something just for you. Tap below to begin your journey...
         </p>
         
-        <button
-          onClick={handleStart}
-          className="heart-button group"
-          style={{ 
-            transform: "translateZ(10px)", 
-            boxShadow: "0 10px 25px -5px rgba(255, 77, 94, 0.4)",
-            transition: "all 0.3s ease"
-          }}
-        >
-          <span>Begin</span>
-          <Heart 
-            className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
-            fill="#FFF"
-          />
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={handleStart}
+            className="heart-button group"
+            style={{ 
+              transform: "translateZ(10px)", 
+              boxShadow: "0 10px 25px -5px rgba(255, 77, 94, 0.4)",
+              transition: "all 0.3s ease"
+            }}
+          >
+            <span>Begin</span>
+            <Heart 
+              className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
+              fill="#FFF"
+            />
+          </button>
+        </div>
       </motion.div>
     </div>
   );
