@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                love: {
+                    100: '#fff1f2',
+                    200: '#ffdde1',
+                    300: '#ffc2c7',
+                    400: '#ffa8af',
+                    500: '#ff8c96',
+                    600: '#ff4d5e',
+                    700: '#ea384c',
+                    800: '#d31434',
+                    900: '#af0f2d'
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +96,50 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'float': {
+                    '0%, 100%': {
+                        transform: 'translateY(0)'
+                    },
+                    '50%': {
+                        transform: 'translateY(-10px)'
+                    }
+                },
+                'heartbeat': {
+                    '0%': { transform: 'scale(1)' },
+                    '14%': { transform: 'scale(1.2)' },
+                    '28%': { transform: 'scale(1)' },
+                    '42%': { transform: 'scale(1.2)' },
+                    '70%': { transform: 'scale(1)' },
+                },
+                'fade-in': {
+                    '0%': { opacity: '0', transform: 'translateY(10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                'swipe-away': {
+                    '0%': { opacity: '1', transform: 'translateX(0) rotate(0)' },
+                    '100%': { opacity: '0', transform: 'translateX(150%) rotate(20deg)' },
+                },
+                'bounce-in': {
+                    '0%': { transform: 'scale(0.8)', opacity: '0' },
+                    '80%': { transform: 'scale(1.1)' },
+                    '100%': { transform: 'scale(1)', opacity: '1' },
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'float': 'float 6s ease-in-out infinite',
+                'heartbeat': 'heartbeat 1.5s infinite',
+                'fade-in': 'fade-in 0.5s ease-out',
+                'swipe-away': 'swipe-away 0.5s ease-out forwards',
+                'bounce-in': 'bounce-in 0.5s ease-out'
+			},
+            backgroundImage: {
+                'love-gradient': 'linear-gradient(135deg, #ffdee9 0%, #b5fffc 100%)',
+                'pink-gradient': 'linear-gradient(135deg, #ffdee9 0%, #ff9eaa 100%)',
+                'romantic-gradient': 'linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%)'
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
