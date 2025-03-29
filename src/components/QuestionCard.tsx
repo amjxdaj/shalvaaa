@@ -35,7 +35,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
               "bg-love-600 hover:bg-love-700"
             )}
           >
-            {option.text}
+            <span className="font-playfair">{option.text}</span>
             <Heart 
               className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
               fill="#FFF"

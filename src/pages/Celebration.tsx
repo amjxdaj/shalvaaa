@@ -2,6 +2,7 @@
 import React from 'react';
 import Celebration from '../components/Celebration';
 import FloatingHearts from '../components/FloatingHearts';
+import AudioPlayer from '../components/AudioPlayer';
 
 const CelebrationPage = () => {
   const handleContinueToInstagram = () => {
@@ -13,6 +14,7 @@ const CelebrationPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
       <FloatingHearts />
+      <AudioPlayer />
       <Celebration onContinue={handleContinueToInstagram} />
     </div>
   );

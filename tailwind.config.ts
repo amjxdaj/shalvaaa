@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+                'dancing': ['Dancing Script', 'cursive'],
+                'playfair': ['Playfair Display', 'serif'],
+                'poppins': ['Poppins', 'sans-serif'],
+            },
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -97,6 +101,10 @@ export default {
 						height: '0'
 					}
 				},
+                'scatter': {
+                    '0%': { transform: 'translate(0, 0) rotate(0deg)' },
+                    '100%': { transform: 'translate(var(--tx, 0), var(--ty, 0)) rotate(var(--r, 0deg))' }
+                },
                 'float': {
                     '0%, 100%': {
                         transform: 'translateY(0)'
@@ -129,6 +137,7 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+                'scatter': 'scatter 0.8s ease-out forwards',
                 'float': 'float 6s ease-in-out infinite',
                 'heartbeat': 'heartbeat 1.5s infinite',
                 'fade-in': 'fade-in 0.5s ease-out',

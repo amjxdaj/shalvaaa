@@ -22,7 +22,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onContinue }) => {
         onClick={onContinue}
         className="heart-button group"
       >
-        <span>Continue</span> 
+        <span className="font-playfair">Continue</span> 
         <Heart 
           className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
           fill="#FFF"
