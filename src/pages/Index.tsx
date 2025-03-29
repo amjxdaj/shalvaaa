@@ -1,16 +1,20 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 
-const Index = () => {
+interface IndexProps {
+  playAudio: () => void;
+}
+
+const Index: React.FC<IndexProps> = ({ playAudio }) => {
   const navigate = useNavigate();
-  
+
   const handleStart = () => {
+    playAudio(); // Play music
     navigate('/photos');
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       <motion.div
@@ -20,7 +24,7 @@ const Index = () => {
         transition={{ duration: 0.8 }}
         style={{
           transform: "translateZ(20px)",
-          boxShadow: "0px 15px 35px -5px rgba(0, 0, 0, 0.25)"
+          boxShadow: "0px 15px 35px -5px rgba(0, 0, 0, 0.25)",
         }}
       >
         <motion.div 
@@ -36,7 +40,9 @@ const Index = () => {
           />
         </motion.div>
         
-        <h1 className="text-4xl mb-6 font-montserrat font-bold text-love-800">For Someone Special</h1>
+        <h1 className="text-4xl mb-6 font-montserrat font-bold text-love-800">
+          For Someone Special
+        </h1>
         <p className="mb-8 text-love-700">
           I've created something just for you. Tap below to begin your journey...
         </p>
