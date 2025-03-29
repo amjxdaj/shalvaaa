@@ -18,7 +18,7 @@ const CelebrationPage = () => {
       window.location.href = instagramWebUrl;
     }, 2000);
   };
-  
+   
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">

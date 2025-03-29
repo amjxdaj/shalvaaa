@@ -9,8 +9,9 @@ const ComplimentsPage = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   
   const compliments = [
-    "You're soo cutee!!!",
-    "Your smile is soo adorable 😭😭❤️"
+    "You're sooo cuteee!!!",
+    "Your eyes are ..🥹❤️",
+    "Your smile is just too adorable 😭😭❤️"
   ];
   
   const handleContinue = () => {

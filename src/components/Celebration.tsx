@@ -79,7 +79,7 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
         ))}
       </div>
       
-      <h1 className="text-4xl mb-6 text-love-800">Yay! 🎉</h1>
+      <h1 className="text-4xl mb-6 text-love-800">الحمد لله</h1>
       <p className="text-xl mb-8">You've made me the happiest person!</p>
       
       <div className="flex justify-center">
@@ -88,7 +88,7 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
           className="heart-button bg-love-600 hover:bg-love-700 group shadow-xl hover:-translate-y-1 transition-all duration-300"
           style={{ transform: "translateZ(30px)" }}
         >
-          <span>Message me now</span>
+          <span>DM</span>
           <Heart 
             className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
             fill="#FFF"

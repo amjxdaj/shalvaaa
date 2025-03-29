@@ -12,12 +12,12 @@ const PhotosPage = () => {
   // Array of photo URLs
   const photos = [
     "/lovable-uploads/ee1f8aa8-47cd-45a6-a80d-3764e0575fcb.png",
+    "/lovable-uploads/fd5640ca-24d1-46f9-9853-88a8d6dbbfaa.png",
     "/lovable-uploads/117ff596-e689-4089-acfb-3d71925aa44d.png",
     "/lovable-uploads/88446da8-dc8a-40c5-8c17-c18cdc3d709b.png",
     "/lovable-uploads/7ce9284a-2045-4293-aeb5-9f741a3b0c8e.png",
     "/lovable-uploads/0fd1fcc6-ebca-48dc-8d0a-04448a7193bb.png",
-    "/lovable-uploads/ab1cab14-d547-4365-b316-2ae1443c80b8.png",
-    "/lovable-uploads/fd5640ca-24d1-46f9-9853-88a8d6dbbfaa.png"
+    "/lovable-uploads/ab1cab14-d547-4365-b316-2ae1443c80b8.png"
   ];
   
   // Generate random scatter positions for each photo

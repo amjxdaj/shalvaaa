@@ -22,7 +22,7 @@ const FinalQuestion = () => {
         className="w-full max-w-sm"
       >
         <QuestionCard 
-          question="Do YOU LIKE ME??"
+          question="DO YOU LIKE ME😭??"
           options={[
             {
               text: "Yes",

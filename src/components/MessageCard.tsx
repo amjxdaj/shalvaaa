@@ -56,7 +56,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onContinue }) => {
             transition: "all 0.3s ease"
           }}
         >
-          <span className="font-montserrat font-bold">Continue</span> 
+          <span className="font-montserrat font-bold">continue</span> 
           <Heart 
             className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
             fill="#FFF"

@@ -44,7 +44,7 @@ const LoveConfession = () => {
             boxShadow: "0 15px 30px -8px rgba(255, 77, 94, 0.5)"
           }}
         >
-          <span className="font-montserrat font-bold">Continue</span>
+          <span className="font-montserrat font-bold">continue</span>
           <Heart 
             className="ml-2 w-5 h-5 group-hover:scale-125 transition-transform" 
             fill="#FFF"

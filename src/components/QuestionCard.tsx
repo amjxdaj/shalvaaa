@@ -73,13 +73,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
             }}
           >
             <span className="font-montserrat">{option.text}</span>
-            <Heart 
+            {/* <Heart 
               className="ml-2 w-5 h-5 transition-transform" 
               fill="#FFF"
               style={{
                 filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.2))"
               }}
-            />
+            /> */}
           </motion.button>
         ))}
       </div>
