@@ -2,13 +2,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PhotoCard from '../components/PhotoCard';
-import FloatingHearts from '../components/FloatingHearts';
 import AudioPlayer from '../components/AudioPlayer';
 
 const PhotosPage = () => {
   const navigate = useNavigate();
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [showScatteredPhotos, setShowScatteredPhotos] = useState(false);
   const [viewedPhotos, setViewedPhotos] = useState<number[]>([]);
   
   // Array of photo URLs
@@ -44,8 +42,7 @@ const PhotosPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
-      <FloatingHearts />
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative bg-gradient-to-br from-pink-50 to-blue-50">
       <AudioPlayer />
       
       <div className="w-full max-w-sm aspect-[3/4] relative photo-stack mx-auto">
@@ -72,11 +69,9 @@ const PhotosPage = () => {
         ))}
       </div>
       
-      {!showScatteredPhotos && (
-        <p className="mt-4 text-love-700 text-lg font-medium text-center">
-          Photo {currentPhotoIndex + 1} of {photos.length}
-        </p>
-      )}
+      <p className="mt-4 text-love-700 text-lg font-medium text-center">
+        Photo {currentPhotoIndex + 1} of {photos.length}
+      </p>
     </div>
   );
 };

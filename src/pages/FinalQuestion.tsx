@@ -11,7 +11,7 @@ const FinalQuestion = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
       <FloatingHearts />
       <AudioPlayer />
       

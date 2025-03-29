@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MessageCard from '../components/MessageCard';
-import FloatingHearts from '../components/FloatingHearts';
+import AudioPlayer from '../components/AudioPlayer';
 
 const ComplimentsPage = () => {
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ const ComplimentsPage = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
-      <FloatingHearts />
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative bg-gradient-to-br from-pink-50 to-blue-50">
+      <AudioPlayer />
       
       <MessageCard 
         message={compliments[currentMessageIndex]}
