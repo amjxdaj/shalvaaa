@@ -2,7 +2,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
 import QuestionCard from '../components/QuestionCard';
 import FloatingHearts from '../components/FloatingHearts';
 import AudioPlayer from '../components/AudioPlayer';
@@ -26,12 +25,10 @@ const FinalQuestion = () => {
           options={[
             {
               text: "Yes",
-              color: "green",
               action: () => navigate('/celebration')
             },
             {
               text: "No",
-              color: "gray",
               action: () => navigate('/sad')
             }
           ]}

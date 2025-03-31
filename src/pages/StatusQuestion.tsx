@@ -20,7 +20,6 @@ const StatusQuestion = () => {
           },
           {
             text: "Committed",
-            color: "gray",
             action: () => navigate('/sad')
           }
         ]}

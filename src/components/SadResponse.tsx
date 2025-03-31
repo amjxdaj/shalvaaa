@@ -16,7 +16,7 @@ const SadResponse: React.FC = () => {
       <p className="text-gray-600 mb-6">
         I understand. Thank you for being honest. I'll always cherish our friendship.
       </p>
-      {/* Removed the "Back to start" button */}
+      {/* Button removed as requested */}
     </motion.div>
   );
 };
