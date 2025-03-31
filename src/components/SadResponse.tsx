@@ -16,12 +16,7 @@ const SadResponse: React.FC = () => {
       <p className="text-gray-600 mb-6">
         I understand. Thank you for being honest. I'll always cherish our friendship.
       </p>
-      <a 
-        href="/"
-        className="inline-block px-6 py-3 bg-gray-400 text-white rounded-full hover:bg-gray-500 transition-colors"
-      >
-        Back to start
-      </a>
+      {/* Removed the "Back to start" button */}
     </motion.div>
   );
 };
