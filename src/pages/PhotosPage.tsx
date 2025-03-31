@@ -17,7 +17,9 @@ const PhotosPage = () => {
     "/lovable-uploads/88446da8-dc8a-40c5-8c17-c18cdc3d709b.png",
     "/lovable-uploads/7ce9284a-2045-4293-aeb5-9f741a3b0c8e.png",
     "/lovable-uploads/0fd1fcc6-ebca-48dc-8d0a-04448a7193bb.png",
-    "/lovable-uploads/ab1cab14-d547-4365-b316-2ae1443c80b8.png"
+    "/lovable-uploads/ab1cab14-d547-4365-b316-2ae1443c80b8.png",
+    "/lovable-uploads/1.png",
+    "/lovable-uploads/2.png"
   ];
   
   // Generate random scatter positions for each photo
