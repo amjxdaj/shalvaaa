@@ -25,8 +25,6 @@ export const trackUserAction = async (action: string, details?: string) => {
   
   // Store in Supabase
   try {
-    console.log("Storing action in Supabase:", { action, details });
-    
     const { error } = await supabase
       .from('user_actions')
       .insert({
@@ -49,6 +47,5 @@ export const trackUserAction = async (action: string, details?: string) => {
 
 // Fallback method that uses in-memory storage
 export const getAllUserActions = () => {
-  console.log("Getting all user actions from memory, count:", userActions.length);
   return [...userActions];
 };

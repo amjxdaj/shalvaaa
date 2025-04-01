@@ -1,34 +1,22 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
-import AudioPlayer from '../components/AudioPlayer';
-import { trackUserAction } from '../utils/trackUserAction';
 
 interface IndexProps {
-  playAudio?: () => void;
+  playAudio: () => void;
 }
 
 const Index: React.FC<IndexProps> = ({ playAudio }) => {
   const navigate = useNavigate();
 
-  const handleStart = async () => {
-    // Track user action
-    await trackUserAction('Started journey', 'From landing page');
-    
-    // Play music if the function is provided
-    if (playAudio) {
-      playAudio();
-    }
-    
+  const handleStart = () => {
+    playAudio(); // Play music
     navigate('/photos');
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      <AudioPlayer />
-      
       <motion.div
         className="romantic-card p-8 text-center max-w-sm mx-auto z-10"
         initial={{ opacity: 0, y: 20 }}
