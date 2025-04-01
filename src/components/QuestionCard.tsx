@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { trackUserAction } from '../utils/trackUserAction';
 
 interface QuestionCardProps {
   question: string;
@@ -13,6 +15,13 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
+  const handleOptionClick = (option: { text: string; action: () => void }) => {
+    // Track the action before executing it
+    trackUserAction(`Selected "${option.text}"`, `Response to: "${question}"`);
+    // Execute the original action
+    option.action();
+  };
+
   return (
     <motion.div
       className="romantic-card p-8 text-center max-w-sm mx-auto bg-white/80 backdrop-blur-md"
@@ -53,7 +62,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
         {options.map((option, index) => (
           <motion.button
             key={index}
-            onClick={option.action}
+            onClick={() => handleOptionClick(option)}
             whileHover={{ scale: 1.05, y: -5 }}
             whileTap={{ scale: 0.98 }}
             className={cn(
@@ -72,13 +81,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
             }}
           >
             <span className="font-montserrat">{option.text}</span>
-            {/* <Heart 
-              className="ml-2 w-5 h-5 transition-transform" 
-              fill="#FFF"
-              style={{
-                filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.2))"
-              }}
-            /> */}
           </motion.button>
         ))}
       </div>

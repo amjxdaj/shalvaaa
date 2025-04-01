@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,7 @@ import FinalQuestion from "./pages/FinalQuestion";
 import Celebration from "./pages/Celebration";
 import Sad from "./pages/Sad";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +46,7 @@ const App = () => {
             <Route path="/final-question" element={<FinalQuestion />} />
             <Route path="/celebration" element={<Celebration />} />
             <Route path="/sad" element={<Sad />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
