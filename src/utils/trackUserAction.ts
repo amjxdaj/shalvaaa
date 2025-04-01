@@ -25,12 +25,15 @@ export const trackUserAction = async (action: string, details?: string) => {
   
   // Store in Supabase
   try {
-    await supabase
+    const { error } = await supabase
       .from('user_actions')
       .insert({
         action: action,
         details: details || null
       });
+      
+    if (error) throw error;
+    
     console.log("Action tracked and stored in Supabase:", newAction);
   } catch (error) {
     console.error("Failed to store action in Supabase:", error);
