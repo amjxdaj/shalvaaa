@@ -4,7 +4,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { Button } from '../components/ui/button';
-import { getAllUserActions } from '../utils/trackUserAction';
+import { toast } from 'sonner';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type UserAction = {
   id: string;
@@ -30,25 +31,23 @@ const AdminDashboard = () => {
         .order('timestamp', { ascending: false });
       
       if (error) {
+        console.error("Error fetching from Supabase:", error);
         throw error;
       }
       
       if (data && data.length > 0) {
-        console.log("Fetched data from Supabase:", data);
+        console.log("Successfully fetched data from Supabase:", data.length, "records");
         setActions(data as UserAction[]);
+        toast.success(`Loaded ${data.length} user actions`);
       } else {
-        console.log("No data from Supabase, using fallback");
-        // Fallback to in-memory actions if no data from Supabase
-        const memoryActions = getAllUserActions();
-        console.log("Memory actions:", memoryActions);
-        setActions(memoryActions as unknown as UserAction[]);
+        console.log("No user actions found in database");
+        setActions([]);
+        toast.info("No user actions found");
       }
     } catch (err: any) {
-      console.error("Error fetching actions:", err);
+      console.error("Failed to fetch user actions:", err);
       setError(err.message || "Failed to load user actions");
-      
-      // Fallback to in-memory actions
-      setActions(getAllUserActions() as unknown as UserAction[]);
+      toast.error("Failed to load data from Supabase");
     } finally {
       setLoading(false);
     }
@@ -67,9 +66,10 @@ const AdminDashboard = () => {
           table: 'user_actions' 
         }, 
         (payload) => {
-          console.log("Received new action:", payload);
+          console.log("Received new action via realtime:", payload);
           // Add new action to the list
           setActions(currentActions => [payload.new as UserAction, ...currentActions]);
+          toast.info(`New action: ${(payload.new as UserAction).action}`);
         }
       )
       .subscribe();
@@ -80,7 +80,12 @@ const AdminDashboard = () => {
   }, []);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
+    try {
+      return new Date(dateString).toLocaleString();
+    } catch (err) {
+      console.error("Error formatting date:", dateString, err);
+      return dateString;
+    }
   };
 
   return (
@@ -116,26 +121,28 @@ const AdminDashboard = () => {
               No user actions recorded yet. Try interacting with the app first.
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Details</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {actions.map((action) => (
-                    <TableRow key={action.id}>
-                      <TableCell>{formatDate(action.timestamp)}</TableCell>
-                      <TableCell className="font-medium">{action.action}</TableCell>
-                      <TableCell>{action.details || '-'}</TableCell>
+            <ScrollArea className="h-[60vh]">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Time</TableHead>
+                      <TableHead>Action</TableHead>
+                      <TableHead>Details</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {actions.map((action) => (
+                      <TableRow key={action.id}>
+                        <TableCell>{formatDate(action.timestamp)}</TableCell>
+                        <TableCell className="font-medium">{action.action}</TableCell>
+                        <TableCell>{action.details || '-'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </ScrollArea>
           )}
         </div>
       </div>

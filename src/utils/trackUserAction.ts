@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 // Type for user actions
 type UserAction = {
@@ -25,24 +26,27 @@ export const trackUserAction = async (action: string, details?: string) => {
   
   // Store in Supabase
   try {
-    const { error } = await supabase
+    console.log("Attempting to store action in Supabase:", { action, details });
+    
+    const { data, error } = await supabase
       .from('user_actions')
       .insert({
         action: action,
         details: details || null
-      });
+      })
+      .select();
       
     if (error) {
       console.error("Failed to store action in Supabase:", error);
       throw error;
     }
     
-    console.log("Action tracked and stored in Supabase:", newAction);
+    console.log("Action tracked and stored in Supabase:", data);
+    return newAction;
   } catch (error) {
     console.error("Failed to store action in Supabase:", error);
+    return newAction;
   }
-  
-  return newAction;
 };
 
 // Fallback method that uses in-memory storage
