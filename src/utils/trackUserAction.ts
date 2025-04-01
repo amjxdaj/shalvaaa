@@ -6,7 +6,7 @@ type UserAction = {
   id: string;
   action: string;
   timestamp: Date;
-  details?: string;
+  details?: string | null;
 };
 
 // In-memory store (will reset on page refresh, used as a fallback)
@@ -32,7 +32,10 @@ export const trackUserAction = async (action: string, details?: string) => {
         details: details || null
       });
       
-    if (error) throw error;
+    if (error) {
+      console.error("Failed to store action in Supabase:", error);
+      throw error;
+    }
     
     console.log("Action tracked and stored in Supabase:", newAction);
   } catch (error) {

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { trackUserAction } from '../utils/trackUserAction';
 
 const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   useEffect(() => {
@@ -40,6 +41,12 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
       clearInterval(interval);
     };
   }, []);
+
+  const handleDMClick = () => {
+    // Track the DM button click action
+    trackUserAction("Clicked DM button", "From celebration page");
+    onContinue();
+  };
 
   return (
     <motion.div 
@@ -84,7 +91,7 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
       
       <div className="flex justify-center">
         <button
-          onClick={onContinue}
+          onClick={handleDMClick}
           className="heart-button bg-love-600 hover:bg-love-700 group shadow-xl hover:-translate-y-1 transition-all duration-300"
           style={{ transform: "translateZ(30px)" }}
         >

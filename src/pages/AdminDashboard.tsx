@@ -33,11 +33,15 @@ const AdminDashboard = () => {
         throw error;
       }
       
-      if (data) {
+      if (data && data.length > 0) {
+        console.log("Fetched data from Supabase:", data);
         setActions(data as UserAction[]);
       } else {
+        console.log("No data from Supabase, using fallback");
         // Fallback to in-memory actions if no data from Supabase
-        setActions(getAllUserActions() as unknown as UserAction[]);
+        const memoryActions = getAllUserActions();
+        console.log("Memory actions:", memoryActions);
+        setActions(memoryActions as unknown as UserAction[]);
       }
     } catch (err: any) {
       console.error("Error fetching actions:", err);
@@ -63,6 +67,7 @@ const AdminDashboard = () => {
           table: 'user_actions' 
         }, 
         (payload) => {
+          console.log("Received new action:", payload);
           // Add new action to the list
           setActions(currentActions => [payload.new as UserAction, ...currentActions]);
         }
