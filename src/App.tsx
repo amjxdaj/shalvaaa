@@ -1,57 +1,41 @@
 
-import React, { useRef } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import PhotosPage from "./pages/PhotosPage";
-import ComplimentsPage from "./pages/ComplimentsPage";
-import StatusQuestion from "./pages/StatusQuestion";
-import LoveConfession from "./pages/LoveConfession";
-import FinalQuestion from "./pages/FinalQuestion";
-import Celebration from "./pages/Celebration";
-import Sad from "./pages/Sad";
-import NotFound from "./pages/NotFound";
-import AdminDashboard from "./pages/AdminDashboard";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+import { Toaster } from 'sonner';
 
-const queryClient = new QueryClient();
+// Import pages
+import NotFound from './pages/NotFound';
+import Index from './pages/Index';
+import StatusQuestion from './pages/StatusQuestion';
+import Sad from './pages/Sad';
+import LoveConfession from './pages/LoveConfession';
+import FinalQuestion from './pages/FinalQuestion';
+import PhotosPage from './pages/PhotosPage';
+import ComplimentsPage from './pages/ComplimentsPage';
+import CelebrationPage from './pages/Celebration';
+import AdminDashboard from './pages/AdminDashboard';
 
 const App = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Function to play music when user clicks "Begin"
-  const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play().catch((err) => console.log("Playback failed:", err));
-    }
-  };
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          {/* Global Audio Player */}
-          <audio ref={audioRef} src="/shalvaa.mp3" loop />
-
-          <Routes>
-            <Route path="/" element={<Index playAudio={playAudio} />} />
-            <Route path="/photos" element={<PhotosPage />} />
-            <Route path="/compliments" element={<ComplimentsPage />} />
-            <Route path="/question-status" element={<StatusQuestion />} />
-            <Route path="/love-confession" element={<LoveConfession />} />
-            <Route path="/final-question" element={<FinalQuestion />} />
-            <Route path="/celebration" element={<Celebration />} />
-            <Route path="/sad" element={<Sad />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <>
+      <Toaster position="top-right" richColors />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/status" element={<StatusQuestion />} />
+          <Route path="/sad" element={<Sad />} />
+          <Route path="/love-confession" element={<LoveConfession />} />
+          <Route path="/final-question" element={<FinalQuestion />} />
+          <Route path="/photos" element={<PhotosPage />} />
+          <Route path="/compliments" element={<ComplimentsPage />} />
+          <Route path="/celebration" element={<CelebrationPage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/not-found" element={<NotFound />} />
+          <Route path="*" element={<Navigate replace to="/not-found" />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 

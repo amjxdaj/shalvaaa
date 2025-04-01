@@ -5,7 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { Button } from '../components/ui/button';
 import { getAllUserActions } from '../utils/trackUserAction';
+import { toast } from 'sonner';
 
+// Define proper types for user actions
 type UserAction = {
   id: string;
   action: string;
@@ -23,6 +25,8 @@ const AdminDashboard = () => {
     setError(null);
     
     try {
+      console.log("Fetching user actions from Supabase...");
+      
       // Fetch actions from Supabase
       const { data, error } = await supabase
         .from('user_actions')
@@ -30,25 +34,35 @@ const AdminDashboard = () => {
         .order('timestamp', { ascending: false });
       
       if (error) {
+        console.error("Supabase query error:", error);
         throw error;
       }
       
       if (data && data.length > 0) {
-        console.log("Fetched data from Supabase:", data);
+        console.log("Successfully fetched data from Supabase:", data);
         setActions(data as UserAction[]);
+        toast.success(`Loaded ${data.length} user actions`);
       } else {
-        console.log("No data from Supabase, using fallback");
+        console.log("No data returned from Supabase, falling back to in-memory actions");
         // Fallback to in-memory actions if no data from Supabase
         const memoryActions = getAllUserActions();
-        console.log("Memory actions:", memoryActions);
+        console.log("In-memory actions:", memoryActions);
         setActions(memoryActions as unknown as UserAction[]);
+        
+        if (memoryActions.length > 0) {
+          toast.info(`Loaded ${memoryActions.length} actions from memory`);
+        } else {
+          toast.info("No user actions found");
+        }
       }
     } catch (err: any) {
       console.error("Error fetching actions:", err);
       setError(err.message || "Failed to load user actions");
+      toast.error("Failed to load user actions");
       
       // Fallback to in-memory actions
-      setActions(getAllUserActions() as unknown as UserAction[]);
+      const memoryActions = getAllUserActions();
+      setActions(memoryActions as unknown as UserAction[]);
     } finally {
       setLoading(false);
     }
@@ -67,20 +81,29 @@ const AdminDashboard = () => {
           table: 'user_actions' 
         }, 
         (payload) => {
-          console.log("Received new action:", payload);
+          console.log("Received new action via realtime:", payload);
           // Add new action to the list
           setActions(currentActions => [payload.new as UserAction, ...currentActions]);
+          toast.success("New user action recorded");
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log("Subscription status:", status);
+      });
     
     return () => {
+      console.log("Cleaning up Supabase channel");
       supabase.removeChannel(channel);
     };
   }, []);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
+    try {
+      return new Date(dateString).toLocaleString();
+    } catch (err) {
+      console.error("Date formatting error:", err);
+      return dateString;
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { trackUserAction } from '../utils/trackUserAction';
+import { toast } from 'sonner';
 
 const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   useEffect(() => {
@@ -42,10 +43,17 @@ const Celebration: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
     };
   }, []);
 
-  const handleDMClick = () => {
-    // Track the DM button click action
-    trackUserAction("Clicked DM button", "From celebration page");
-    onContinue();
+  const handleDMClick = async () => {
+    try {
+      // Track the DM button click action
+      await trackUserAction("Clicked DM button", "From celebration page");
+      toast.success("See you in the DMs! ❤️");
+      onContinue();
+    } catch (error) {
+      console.error("Error tracking DM button click:", error);
+      // Still continue with the action even if tracking fails
+      onContinue();
+    }
   };
 
   return (
