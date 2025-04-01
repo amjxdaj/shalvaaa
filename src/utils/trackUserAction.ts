@@ -1,5 +1,7 @@
 
-// Simple in-memory storage for user actions (in a real app, this would use a database)
+import { supabase } from "@/integrations/supabase/client";
+
+// Type for user actions
 type UserAction = {
   id: string;
   action: string;
@@ -7,10 +9,10 @@ type UserAction = {
   details?: string;
 };
 
-// In-memory store (will reset on page refresh)
+// In-memory store (will reset on page refresh, used as a fallback)
 const userActions: UserAction[] = [];
 
-export const trackUserAction = (action: string, details?: string) => {
+export const trackUserAction = async (action: string, details?: string) => {
   const newAction: UserAction = {
     id: crypto.randomUUID(),
     action,
@@ -18,13 +20,26 @@ export const trackUserAction = (action: string, details?: string) => {
     details,
   };
   
+  // Add to in-memory store as fallback
   userActions.push(newAction);
-  console.log("Action tracked:", newAction);
   
-  // In a real app, you'd send this to a backend
+  // Store in Supabase
+  try {
+    await supabase
+      .from('user_actions')
+      .insert({
+        action: action,
+        details: details || null
+      });
+    console.log("Action tracked and stored in Supabase:", newAction);
+  } catch (error) {
+    console.error("Failed to store action in Supabase:", error);
+  }
+  
   return newAction;
 };
 
+// Fallback method that uses in-memory storage
 export const getAllUserActions = () => {
   return [...userActions];
 };

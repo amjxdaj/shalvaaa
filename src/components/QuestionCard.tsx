@@ -15,9 +15,9 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question, options }) => {
-  const handleOptionClick = (option: { text: string; action: () => void }) => {
-    // Track the action before executing it
-    trackUserAction(`Selected "${option.text}"`, `Response to: "${question}"`);
+  const handleOptionClick = async (option: { text: string; action: () => void }) => {
+    // Track the action in Supabase before executing it
+    await trackUserAction(`Selected "${option.text}"`, `Response to: "${question}"`);
     // Execute the original action
     option.action();
   };
