@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Fetch actions from Supabase
+      // Fetch actions from Supabase with debugging
       const { data, error } = await supabase
         .from('user_actions')
         .select('*')
@@ -62,6 +62,7 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
+    // Immediately fetch actions when component mounts
     fetchActions();
     
     // Set up real-time subscription for new actions
