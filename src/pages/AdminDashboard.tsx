@@ -39,7 +39,7 @@ const AdminDashboard = () => {
       
       console.log("Supabase response:", data);
       
-      if (data && data.length > 0) {
+      if (data && Array.isArray(data) && data.length > 0) {
         console.log(`Successfully fetched ${data.length} user actions`);
         setActions(data as UserAction[]);
         toast.success(`Loaded ${data.length} user actions`);
@@ -62,8 +62,9 @@ const AdminDashboard = () => {
     
     // Set up real-time subscription for new actions
     const channel = supabase
-      .channel('public:user_actions')
-      .on('postgres_changes', 
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes', 
         { 
           event: 'INSERT', 
           schema: 'public', 
@@ -76,7 +77,9 @@ const AdminDashboard = () => {
           toast.info(`New action: ${(payload.new as UserAction).action}`);
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log("Supabase channel status:", status);
+      });
     
     // Clean up subscription when component unmounts
     return () => {

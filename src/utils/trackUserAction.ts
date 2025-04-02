@@ -29,7 +29,7 @@ export const trackUserAction = async (action: string, details?: string) => {
   // Store in Supabase
   try {
     // Ensure we're passing values in the correct format expected by Supabase
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('user_actions')
       .insert({
         action: action,
