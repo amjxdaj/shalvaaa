@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Fetch actions from Supabase with debugging
+      // Fetch actions from Supabase with additional debugging
       const { data, error } = await supabase
         .from('user_actions')
         .select('*')
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
         throw error;
       }
       
-      console.log("Supabase response:", data);
+      console.log("Supabase raw response:", data);
       
       if (data && Array.isArray(data)) {
         console.log(`Successfully fetched ${data.length} user actions`);
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    // Immediately fetch actions when component mounts
+    // Fetch actions immediately when component mounts
     fetchActions();
     
     // Set up real-time subscription for new actions
