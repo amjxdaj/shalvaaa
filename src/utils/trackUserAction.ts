@@ -24,27 +24,29 @@ export const trackUserAction = async (action: string, details?: string) => {
   // Add to in-memory store as fallback
   userActions.push(newAction);
   
+  console.log("Attempting to track action:", { action, details });
+  
   // Store in Supabase
   try {
-    console.log("Attempting to store action in Supabase:", { action, details });
-    
+    // Ensure we're passing values in the correct format expected by Supabase
     const { data, error } = await supabase
       .from('user_actions')
       .insert({
         action: action,
         details: details || null
-      })
-      .select();
+      });
       
     if (error) {
       console.error("Failed to store action in Supabase:", error);
-      throw error;
+      toast.error("Failed to record action");
+      return newAction;
     }
     
-    console.log("Action tracked and stored in Supabase:", data);
+    console.log("Action successfully tracked in Supabase");
     return newAction;
   } catch (error) {
-    console.error("Failed to store action in Supabase:", error);
+    console.error("Exception when storing action in Supabase:", error);
+    toast.error("Failed to record action");
     return newAction;
   }
 };

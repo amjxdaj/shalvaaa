@@ -24,6 +24,8 @@ const AdminDashboard = () => {
     setError(null);
     
     try {
+      console.log("Fetching user actions from Supabase...");
+      
       // Fetch actions from Supabase
       const { data, error } = await supabase
         .from('user_actions')
@@ -31,12 +33,14 @@ const AdminDashboard = () => {
         .order('timestamp', { ascending: false });
       
       if (error) {
-        console.error("Error fetching from Supabase:", error);
+        console.error("Error fetching actions from Supabase:", error);
         throw error;
       }
       
+      console.log("Supabase response:", data);
+      
       if (data && data.length > 0) {
-        console.log("Successfully fetched data from Supabase:", data.length, "records");
+        console.log(`Successfully fetched ${data.length} user actions`);
         setActions(data as UserAction[]);
         toast.success(`Loaded ${data.length} user actions`);
       } else {
@@ -74,7 +78,9 @@ const AdminDashboard = () => {
       )
       .subscribe();
     
+    // Clean up subscription when component unmounts
     return () => {
+      console.log("Cleaning up Supabase channel subscription");
       supabase.removeChannel(channel);
     };
   }, []);
