@@ -26,13 +26,6 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Enable Postgres changes for this table
-      await supabase.rpc('supabase_functions.http', {
-        method: 'POST',
-        url: '/rest/v1/user_actions?on_conflict=id',
-        headers: { Prefer: 'resolution=merge-duplicates' }
-      });
-      
       // Fetch actions from Supabase
       const { data, error } = await supabase
         .from('user_actions')
