@@ -26,6 +26,13 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
+      // Enable Postgres changes for this table
+      await supabase.rpc('supabase_functions.http', {
+        method: 'POST',
+        url: '/rest/v1/user_actions?on_conflict=id',
+        headers: { Prefer: 'resolution=merge-duplicates' }
+      });
+      
       // Fetch actions from Supabase
       const { data, error } = await supabase
         .from('user_actions')
@@ -39,12 +46,16 @@ const AdminDashboard = () => {
       
       console.log("Supabase response:", data);
       
-      if (data && Array.isArray(data) && data.length > 0) {
+      if (data && Array.isArray(data)) {
         console.log(`Successfully fetched ${data.length} user actions`);
         setActions(data as UserAction[]);
-        toast.success(`Loaded ${data.length} user actions`);
+        if (data.length > 0) {
+          toast.success(`Loaded ${data.length} user actions`);
+        } else {
+          toast.info("No user actions found");
+        }
       } else {
-        console.log("No user actions found in database");
+        console.log("No user actions found in database or invalid response");
         setActions([]);
         toast.info("No user actions found");
       }
