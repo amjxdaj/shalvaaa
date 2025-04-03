@@ -7,18 +7,18 @@ import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-// Make type match exactly what's in the database
+// Basic user action type
 type UserAction = {
   id: string;
   action: string;
   timestamp: string;
-  details: string | null;
 };
 
 const AdminDashboard = () => {
   const [actions, setActions] = useState<UserAction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastFetchTime, setLastFetchTime] = useState<string>('');
 
   const fetchActions = async () => {
     setLoading(true);
@@ -27,64 +27,73 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Enable debugging to see full API requests
-      const startTime = performance.now();
-      
+      // Simplest possible query
       const { data, error } = await supabase
         .from('user_actions')
-        .select('*');
-      
-      const endTime = performance.now();
-      console.log(`Query took ${endTime - startTime}ms to execute`);
+        .select('id, action, timestamp');
       
       if (error) {
-        console.error("Error fetching actions from Supabase:", error);
-        throw error;
+        console.error("Error fetching actions:", error);
+        setError(`Failed to load actions: ${error.message}`);
+        toast.error("Error loading user actions");
+        setActions([]);
+        return;
       }
       
-      // Dump raw response for debugging
-      console.log("Raw API response:", JSON.stringify(data));
-      console.log("Response type:", typeof data);
-      console.log("Is array?", Array.isArray(data));
-      console.log("Length:", data?.length);
+      console.log("Raw data response:", data);
       
       if (data && Array.isArray(data)) {
+        console.log(`Found ${data.length} user actions`);
+        setActions(data);
         if (data.length > 0) {
-          console.log(`Found ${data.length} user actions`);
-          // Log each item for inspection
-          data.forEach((item, index) => {
-            console.log(`Item ${index}:`, JSON.stringify(item));
-          });
-          setActions(data);
           toast.success(`Loaded ${data.length} user actions`);
         } else {
-          console.log("API returned an empty array");
-          setActions([]);
-          toast.info("No user actions found in database");
+          toast.info("No user actions found");
         }
       } else {
-        console.log("Invalid response format or null data");
-        console.log("Data value:", data);
+        console.error("Invalid data response format:", data);
+        setError("Invalid response from database");
         setActions([]);
-        toast.error("Invalid response format from database");
       }
     } catch (err: any) {
-      console.error("Failed to fetch user actions:", err);
-      setError(err.message || "Failed to load user actions");
-      toast.error("Failed to load data from Supabase");
+      console.error("Exception occurred:", err);
+      setError("Failed to load user actions");
+      toast.error("Error loading data");
+      setActions([]);
     } finally {
       setLoading(false);
+      setLastFetchTime(new Date().toLocaleTimeString());
+    }
+  };
+
+  // Create test data for verification
+  const createTestAction = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_actions')
+        .insert({
+          action: `Test action ${new Date().toLocaleTimeString()}`,
+          details: "Generated for testing"
+        })
+        .select();
+        
+      if (error) {
+        toast.error("Failed to create test action");
+        console.error("Error creating test action:", error);
+      } else {
+        toast.success("Test action created");
+        console.log("Test action created:", data);
+        fetchActions(); // Refresh the list
+      }
+    } catch (err) {
+      console.error("Exception creating test action:", err);
     }
   };
 
   useEffect(() => {
-    // Load actions immediately
     fetchActions();
     
-    // Debug Supabase connection
-    console.log("Supabase URL:", supabase.constructor['url']);
-    
-    // Set up realtime subscription for new actions
+    // Set up realtime subscription
     const channel = supabase
       .channel('schema-db-changes')
       .on(
@@ -96,17 +105,13 @@ const AdminDashboard = () => {
         }, 
         (payload) => {
           console.log("Received new action via realtime:", payload);
-          setActions(currentActions => [payload.new as UserAction, ...currentActions]);
-          toast.info(`New action: ${(payload.new as UserAction).action}`);
+          fetchActions(); // Refresh the entire list when a new action is added
         }
       )
-      .subscribe((status) => {
-        console.log("Supabase channel status:", status);
-      });
+      .subscribe();
     
-    // Cleanup subscription
+    // Cleanup
     return () => {
-      console.log("Cleaning up Supabase channel subscription");
       supabase.removeChannel(channel);
     };
   }, []);
@@ -115,7 +120,6 @@ const AdminDashboard = () => {
     try {
       return new Date(dateString).toLocaleString();
     } catch (err) {
-      console.error("Error formatting date:", dateString, err);
       return dateString;
     }
   };
@@ -125,16 +129,26 @@ const AdminDashboard = () => {
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <Button 
-            variant="outline"
-            onClick={fetchActions}
-            disabled={loading}
-            className="flex items-center gap-2"
-          >
-            {loading ? <ReloadIcon className="h-4 w-4 animate-spin" /> : <ReloadIcon className="h-4 w-4" />}
-            Refresh
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline"
+              onClick={fetchActions}
+              disabled={loading}
+              className="flex items-center gap-2"
+            >
+              {loading ? <ReloadIcon className="h-4 w-4 animate-spin" /> : <ReloadIcon className="h-4 w-4" />}
+              Refresh
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={createTestAction}
+              disabled={loading}
+            >
+              Create Test Action
+            </Button>
+          </div>
         </header>
+        
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">User Interactions</h2>
           
@@ -144,13 +158,17 @@ const AdminDashboard = () => {
             </div>
           )}
           
+          <div className="mb-4 text-sm text-gray-500">
+            Last refreshed: {lastFetchTime || 'Never'}
+          </div>
+          
           {loading ? (
             <div className="flex justify-center py-8">
               <ReloadIcon className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : actions.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
-              No user actions recorded yet. Try interacting with the app first.
+              No user actions recorded yet. Try interacting with the app or use the "Create Test Action" button.
             </div>
           ) : (
             <ScrollArea className="h-[60vh]">
@@ -160,7 +178,6 @@ const AdminDashboard = () => {
                     <TableRow>
                       <TableHead>Time</TableHead>
                       <TableHead>Action</TableHead>
-                      <TableHead>Details</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -168,7 +185,6 @@ const AdminDashboard = () => {
                       <TableRow key={action.id}>
                         <TableCell>{formatDate(action.timestamp)}</TableCell>
                         <TableCell className="font-medium">{action.action}</TableCell>
-                        <TableCell>{action.details || '-'}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -177,14 +193,16 @@ const AdminDashboard = () => {
             </ScrollArea>
           )}
           
-          {/* Debug information */}
           <div className="mt-8 p-4 border border-gray-200 rounded-md bg-gray-50">
             <h3 className="font-semibold mb-2">Debug Info:</h3>
             <p className="text-xs text-gray-600">
-              Connected to Supabase project: {supabase.constructor['url'] || 'Unknown'}
+              Supabase URL: {supabase.constructor['url'] || 'Unknown'}
             </p>
             <p className="text-xs text-gray-600">
-              Table: user_actions
+              Connected to table: public.user_actions
+            </p>
+            <p className="text-xs text-gray-600">
+              Actions loaded: {actions.length}
             </p>
             <Button size="sm" variant="ghost" onClick={() => console.log("Current actions state:", actions)}>
               Log Current State

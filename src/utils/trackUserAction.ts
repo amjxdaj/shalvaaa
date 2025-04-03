@@ -10,22 +10,12 @@ type UserAction = {
   details?: string | null;
 };
 
-// In-memory store (will reset on page refresh, used as a fallback)
-const userActions: UserAction[] = [];
-
+// Track user action function
 export const trackUserAction = async (action: string, details?: string) => {
-  const newAction: UserAction = {
-    id: crypto.randomUUID(),
-    action,
-    timestamp: new Date(),
-    details,
-  };
+  console.log(`Tracking action: "${action}"${details ? ` with details: "${details}"` : ''}`);
   
-  console.log("Attempting to track action:", { action, details });
-  
-  // Store in Supabase
   try {
-    // Insert with explicit fields and return the inserted data
+    // Insert into Supabase with explicit return
     const { error, data } = await supabase
       .from('user_actions')
       .insert({
@@ -36,24 +26,16 @@ export const trackUserAction = async (action: string, details?: string) => {
       
     if (error) {
       console.error("Failed to store action in Supabase:", error);
-      // Store in memory as fallback
-      userActions.push(newAction);
       toast.error("Failed to save action");
-      return newAction;
+      return null;
     }
     
-    console.log("Action successfully tracked in Supabase, returned data:", data);
+    console.log("Action tracked successfully, response:", data);
     toast.success("Action tracked successfully");
-    return newAction;
+    return data[0];
   } catch (error) {
     console.error("Exception when storing action in Supabase:", error);
-    // Store in memory as fallback
-    userActions.push(newAction);
-    return newAction;
+    toast.error("Error saving action");
+    return null;
   }
-};
-
-// Fallback method that uses in-memory storage
-export const getAllUserActions = () => {
-  return [...userActions];
 };
