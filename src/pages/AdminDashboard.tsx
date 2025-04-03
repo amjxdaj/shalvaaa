@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
@@ -6,6 +5,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { trackUserAction } from '@/utils/trackUserAction';
 
 // Basic user action type
 type UserAction = {
@@ -25,9 +25,6 @@ const AdminDashboard = () => {
     setError(null);
     
     try {
-      console.log("Fetching user actions from Supabase...");
-      
-      // Simplest possible query
       const { data, error } = await supabase
         .from('user_actions')
         .select('id, action, timestamp');
@@ -66,27 +63,19 @@ const AdminDashboard = () => {
     }
   };
 
-  // Create test data for verification
   const createTestAction = async () => {
     try {
-      const { data, error } = await supabase
-        .from('user_actions')
-        .insert({
-          action: `Test action ${new Date().toLocaleTimeString()}`,
-          details: "Generated for testing"
-        })
-        .select();
-        
-      if (error) {
-        toast.error("Failed to create test action");
-        console.error("Error creating test action:", error);
-      } else {
-        toast.success("Test action created");
-        console.log("Test action created:", data);
+      const result = await trackUserAction('Admin Dashboard Test', 'Manual test action creation');
+      
+      if (result) {
+        toast.success("Test action created successfully");
         fetchActions(); // Refresh the list
+      } else {
+        toast.error("Failed to create test action");
       }
     } catch (err) {
       console.error("Exception creating test action:", err);
+      toast.error("Error creating test action");
     }
   };
 
@@ -192,22 +181,6 @@ const AdminDashboard = () => {
               </div>
             </ScrollArea>
           )}
-          
-          <div className="mt-8 p-4 border border-gray-200 rounded-md bg-gray-50">
-            <h3 className="font-semibold mb-2">Debug Info:</h3>
-            <p className="text-xs text-gray-600">
-              Supabase URL: {supabase.constructor['url'] || 'Unknown'}
-            </p>
-            <p className="text-xs text-gray-600">
-              Connected to table: public.user_actions
-            </p>
-            <p className="text-xs text-gray-600">
-              Actions loaded: {actions.length}
-            </p>
-            <Button size="sm" variant="ghost" onClick={() => console.log("Current actions state:", actions)}>
-              Log Current State
-            </Button>
-          </div>
         </div>
       </div>
     </div>

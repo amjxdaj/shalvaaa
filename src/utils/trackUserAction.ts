@@ -26,12 +26,11 @@ export const trackUserAction = async (action: string, details?: string) => {
       
     if (error) {
       console.error("Failed to store action in Supabase:", error);
-      toast.error("Failed to save action");
+      toast.error(`Failed to save action: ${error.message}`);
       return null;
     }
     
     console.log("Action tracked successfully, response:", data);
-    toast.success("Action tracked successfully");
     return data[0];
   } catch (error) {
     console.error("Exception when storing action in Supabase:", error);
