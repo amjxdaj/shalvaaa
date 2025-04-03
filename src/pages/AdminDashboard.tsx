@@ -7,10 +7,10 @@ import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+// Simplified UserAction type focusing on just action and timestamp
 type UserAction = {
   id: string;
   action: string;
-  details: string | null;
   timestamp: string;
 };
 
@@ -26,31 +26,30 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Try with explicit schema naming and no filters to ensure we get everything
+      // Make the query as simple as possible - just get id, action, and timestamp
       const { data, error } = await supabase
         .from('user_actions')
-        .select('id, action, details, timestamp');
+        .select('id, action, timestamp');
       
       if (error) {
         console.error("Error fetching actions from Supabase:", error);
         throw error;
       }
       
-      console.log("Supabase response data:", data);
-      console.log("Response data type:", typeof data);
-      console.log("Is array?", Array.isArray(data));
+      // Log complete raw response to debug
+      console.log("Raw response:", JSON.stringify(data));
       
-      if (data && Array.isArray(data)) {
-        console.log(`Successfully fetched ${data.length} user actions`);
-        console.log("First item if any:", data.length > 0 ? data[0] : "No items");
+      if (data && Array.isArray(data) && data.length > 0) {
+        console.log(`Found ${data.length} user actions`);
+        data.forEach((item, index) => {
+          console.log(`Item ${index}:`, JSON.stringify(item));
+        });
+        
         setActions(data as UserAction[]);
-        if (data.length > 0) {
-          toast.success(`Loaded ${data.length} user actions`);
-        } else {
-          toast.info("No user actions found");
-        }
+        toast.success(`Loaded ${data.length} user actions`);
       } else {
-        console.log("No user actions found in database or invalid response");
+        console.log("No user actions found or invalid response format");
+        console.log("Data value:", data);
         setActions([]);
         toast.info("No user actions found");
       }
@@ -64,10 +63,10 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    // Fetch actions immediately when component mounts
+    // Load actions immediately
     fetchActions();
     
-    // Set up real-time subscription for new actions
+    // Set up realtime subscription for new actions
     const channel = supabase
       .channel('schema-db-changes')
       .on(
@@ -79,7 +78,6 @@ const AdminDashboard = () => {
         }, 
         (payload) => {
           console.log("Received new action via realtime:", payload);
-          // Add new action to the list
           setActions(currentActions => [payload.new as UserAction, ...currentActions]);
           toast.info(`New action: ${(payload.new as UserAction).action}`);
         }
@@ -88,7 +86,7 @@ const AdminDashboard = () => {
         console.log("Supabase channel status:", status);
       });
     
-    // Clean up subscription when component unmounts
+    // Cleanup subscription
     return () => {
       console.log("Cleaning up Supabase channel subscription");
       supabase.removeChannel(channel);
@@ -144,7 +142,6 @@ const AdminDashboard = () => {
                     <TableRow>
                       <TableHead>Time</TableHead>
                       <TableHead>Action</TableHead>
-                      <TableHead>Details</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -152,7 +149,6 @@ const AdminDashboard = () => {
                       <TableRow key={action.id}>
                         <TableCell>{formatDate(action.timestamp)}</TableCell>
                         <TableCell className="font-medium">{action.action}</TableCell>
-                        <TableCell>{action.details || '-'}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
