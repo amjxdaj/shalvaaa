@@ -25,12 +25,14 @@ export const trackUserAction = async (action: string, details?: string) => {
   
   // Store in Supabase
   try {
-    // Make a simple insert with just action field
-    const { error } = await supabase
+    // Insert with explicit fields and return the inserted data
+    const { error, data } = await supabase
       .from('user_actions')
       .insert({
         action: action,
-      });
+        details: details || null
+      })
+      .select();
       
     if (error) {
       console.error("Failed to store action in Supabase:", error);
@@ -40,7 +42,7 @@ export const trackUserAction = async (action: string, details?: string) => {
       return newAction;
     }
     
-    console.log("Action successfully tracked in Supabase");
+    console.log("Action successfully tracked in Supabase, returned data:", data);
     toast.success("Action tracked successfully");
     return newAction;
   } catch (error) {

@@ -7,11 +7,12 @@ import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-// Simplified UserAction type focusing on just action and timestamp
+// Make type match exactly what's in the database
 type UserAction = {
   id: string;
   action: string;
   timestamp: string;
+  details: string | null;
 };
 
 const AdminDashboard = () => {
@@ -26,32 +27,46 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Make the query as simple as possible - just get id, action, and timestamp
+      // Enable debugging to see full API requests
+      const startTime = performance.now();
+      
       const { data, error } = await supabase
         .from('user_actions')
-        .select('id, action, timestamp');
+        .select('*');
+      
+      const endTime = performance.now();
+      console.log(`Query took ${endTime - startTime}ms to execute`);
       
       if (error) {
         console.error("Error fetching actions from Supabase:", error);
         throw error;
       }
       
-      // Log complete raw response to debug
-      console.log("Raw response:", JSON.stringify(data));
+      // Dump raw response for debugging
+      console.log("Raw API response:", JSON.stringify(data));
+      console.log("Response type:", typeof data);
+      console.log("Is array?", Array.isArray(data));
+      console.log("Length:", data?.length);
       
-      if (data && Array.isArray(data) && data.length > 0) {
-        console.log(`Found ${data.length} user actions`);
-        data.forEach((item, index) => {
-          console.log(`Item ${index}:`, JSON.stringify(item));
-        });
-        
-        setActions(data as UserAction[]);
-        toast.success(`Loaded ${data.length} user actions`);
+      if (data && Array.isArray(data)) {
+        if (data.length > 0) {
+          console.log(`Found ${data.length} user actions`);
+          // Log each item for inspection
+          data.forEach((item, index) => {
+            console.log(`Item ${index}:`, JSON.stringify(item));
+          });
+          setActions(data);
+          toast.success(`Loaded ${data.length} user actions`);
+        } else {
+          console.log("API returned an empty array");
+          setActions([]);
+          toast.info("No user actions found in database");
+        }
       } else {
-        console.log("No user actions found or invalid response format");
+        console.log("Invalid response format or null data");
         console.log("Data value:", data);
         setActions([]);
-        toast.info("No user actions found");
+        toast.error("Invalid response format from database");
       }
     } catch (err: any) {
       console.error("Failed to fetch user actions:", err);
@@ -65,6 +80,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     // Load actions immediately
     fetchActions();
+    
+    // Debug Supabase connection
+    console.log("Supabase URL:", supabase.constructor['url']);
     
     // Set up realtime subscription for new actions
     const channel = supabase
@@ -142,6 +160,7 @@ const AdminDashboard = () => {
                     <TableRow>
                       <TableHead>Time</TableHead>
                       <TableHead>Action</TableHead>
+                      <TableHead>Details</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -149,6 +168,7 @@ const AdminDashboard = () => {
                       <TableRow key={action.id}>
                         <TableCell>{formatDate(action.timestamp)}</TableCell>
                         <TableCell className="font-medium">{action.action}</TableCell>
+                        <TableCell>{action.details || '-'}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -156,6 +176,20 @@ const AdminDashboard = () => {
               </div>
             </ScrollArea>
           )}
+          
+          {/* Debug information */}
+          <div className="mt-8 p-4 border border-gray-200 rounded-md bg-gray-50">
+            <h3 className="font-semibold mb-2">Debug Info:</h3>
+            <p className="text-xs text-gray-600">
+              Connected to Supabase project: {supabase.constructor['url'] || 'Unknown'}
+            </p>
+            <p className="text-xs text-gray-600">
+              Table: user_actions
+            </p>
+            <Button size="sm" variant="ghost" onClick={() => console.log("Current actions state:", actions)}>
+              Log Current State
+            </Button>
+          </div>
         </div>
       </div>
     </div>
