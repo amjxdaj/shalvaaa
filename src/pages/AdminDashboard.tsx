@@ -26,21 +26,23 @@ const AdminDashboard = () => {
     try {
       console.log("Fetching user actions from Supabase...");
       
-      // Fetch actions from Supabase with additional debugging
+      // Try with explicit schema naming and no filters to ensure we get everything
       const { data, error } = await supabase
         .from('user_actions')
-        .select('*')
-        .order('timestamp', { ascending: false });
+        .select('id, action, details, timestamp');
       
       if (error) {
         console.error("Error fetching actions from Supabase:", error);
         throw error;
       }
       
-      console.log("Supabase raw response:", data);
+      console.log("Supabase response data:", data);
+      console.log("Response data type:", typeof data);
+      console.log("Is array?", Array.isArray(data));
       
       if (data && Array.isArray(data)) {
         console.log(`Successfully fetched ${data.length} user actions`);
+        console.log("First item if any:", data.length > 0 ? data[0] : "No items");
         setActions(data as UserAction[]);
         if (data.length > 0) {
           toast.success(`Loaded ${data.length} user actions`);
