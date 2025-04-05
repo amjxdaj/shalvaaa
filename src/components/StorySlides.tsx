@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -75,7 +76,7 @@ const StorySlides = () => {
       >
         <CarouselContent>
           {/* First Story Group */}
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 When I first saw you
@@ -83,7 +84,7 @@ const StorySlides = () => {
             </div>
           </CarouselItem>
           
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 It was like
@@ -91,7 +92,7 @@ const StorySlides = () => {
             </div>
           </CarouselItem>
           
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-4 w-full h-full">
               <div className="w-full h-full relative overflow-hidden rounded-xl">
                 <img 
@@ -104,7 +105,7 @@ const StorySlides = () => {
           </CarouselItem>
           
           {/* Second Story Group */}
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 Sugar dissolves in water, so please don't walk in the rain
@@ -112,7 +113,7 @@ const StorySlides = () => {
             </div>
           </CarouselItem>
           
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 or I might lose a Sweetie like you!!😭
@@ -121,7 +122,7 @@ const StorySlides = () => {
           </CarouselItem>
           
           {/* Third Story Group */}
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 In English, they said, "Pretty Eyes,"
@@ -129,7 +130,7 @@ const StorySlides = () => {
             </div>
           </CarouselItem>
           
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 but in poetry, we say:
@@ -137,7 +138,7 @@ const StorySlides = () => {
             </div>
           </CarouselItem>
           
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
                 Even if the sky was filled with stars, I'd still rather see them in your eyes.
@@ -146,7 +147,7 @@ const StorySlides = () => {
           </CarouselItem>
           
           {/* Final Image Slide */}
-          <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
+          <CarouselItem className="flex flex-col items-center justify-center h-[50vh] aspect-[3/4]">
             <div className="romantic-card p-4 w-full h-full">
               <div className="w-full h-full relative overflow-hidden rounded-xl">
                 <img 
