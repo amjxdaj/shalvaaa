@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -11,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { trackUserAction } from '@/utils/trackUserAction';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const StorySlides = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const StorySlides = () => {
   const [api, setApi] = useState<any>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     if (!api) return;
@@ -36,7 +37,6 @@ const StorySlides = () => {
     };
   }, [api]);
   
-  // Show continue button only on last slide
   useEffect(() => {
     if (current === count - 1) {
       setShowButton(true);
@@ -51,8 +51,28 @@ const StorySlides = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative bg-gradient-to-br from-pink-50 to-blue-50">
-      <Carousel className="w-full max-w-md relative mb-4" setApi={setApi}>
+    <div className={`
+      min-h-screen 
+      flex 
+      flex-col 
+      items-center 
+      justify-center 
+      p-4 
+      relative 
+      bg-gradient-to-br 
+      from-pink-50 
+      to-blue-50
+      ${isMobile ? 'space-y-4' : 'space-y-6'}
+    `}>
+      <Carousel 
+        className={`
+          w-full 
+          ${isMobile ? 'max-w-xs' : 'max-w-md'} 
+          relative 
+          mb-2
+        `} 
+        setApi={setApi}
+      >
         <CarouselContent>
           {/* First Story Group */}
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
@@ -139,24 +159,49 @@ const StorySlides = () => {
           </CarouselItem>
         </CarouselContent>
         
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-          <CarouselPrevious variant="outline" size="sm" className="h-7 w-7 relative static translate-y-0 left-0" />
-          <CarouselNext variant="outline" size="sm" className="h-7 w-7 relative static translate-y-0 right-0" />
+        <div className={`
+          absolute 
+          bottom-0 
+          left-0 
+          right-0 
+          flex 
+          justify-center 
+          gap-2 
+          ${isMobile ? 'pb-2' : 'pb-4'}
+        `}>
+          <CarouselPrevious 
+            variant="outline" 
+            size="sm" 
+            className="h-6 w-6 relative static translate-y-0 left-0" 
+          />
+          <CarouselNext 
+            variant="outline" 
+            size="sm" 
+            className="h-6 w-6 relative static translate-y-0 right-0" 
+          />
         </div>
       </Carousel>
       
-      {/* Move continue button outside of carousel */}
       {showButton && (
         <Button 
           onClick={handleComplete}
-          className="heart-button group animate-bounce-in"
+          className={`
+            heart-button 
+            group 
+            animate-bounce-in
+            ${isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3'}
+          `}
         >
           Continue
-          <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       )}
       
-      <div className="mt-4 text-center text-love-600 text-sm">
+      <div className={`
+        text-center 
+        text-love-600 
+        ${isMobile ? 'text-xs' : 'text-sm'}
+      `}>
         <p>Swipe to see more</p>
       </div>
     </div>
