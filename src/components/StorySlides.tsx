@@ -58,7 +58,7 @@ const StorySlides = () => {
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
-                When I first met you
+                When I first saw you
               </h2>
             </div>
           </CarouselItem>
