@@ -44,7 +44,7 @@ const Index: React.FC<IndexProps> = ({ playAudio }) => {
           For Someone Special
         </h1>
         <p className="mb-8 text-love-700">
-          I've created something just for you. Tap below to begin your journey...
+          I've created something just for you...
         </p>
         
         <div className="flex justify-center">
