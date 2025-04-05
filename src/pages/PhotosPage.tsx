@@ -45,9 +45,9 @@ const PhotosPage = () => {
         setCurrentPhotoIndex(currentPhotoIndex + 1);
       }, 100);
     } else {
-      // Navigate to compliments page when all photos have been viewed
+      // Navigate to story page when all photos have been viewed
       setTimeout(() => {
-        navigate('/compliments');
+        navigate('/story');
       }, 2000);
     }
   };
