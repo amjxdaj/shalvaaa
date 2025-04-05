@@ -66,7 +66,7 @@ const StorySlides = () => {
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
-                it was like
+                It was like
               </h2>
             </div>
           </CarouselItem>
@@ -95,7 +95,7 @@ const StorySlides = () => {
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
-                or I might lose a Sweetie like you🥺😭
+                or I might lose a Sweetie like you!!😭
               </h2>
             </div>
           </CarouselItem>
@@ -104,7 +104,7 @@ const StorySlides = () => {
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
-                In English, they said, "pretty eyes,"
+                In English, they said, "Pretty Eyes,"
               </h2>
             </div>
           </CarouselItem>
@@ -120,7 +120,7 @@ const StorySlides = () => {
           <CarouselItem className="flex flex-col items-center justify-center h-[70vh]">
             <div className="romantic-card p-8 w-full h-full flex items-center justify-center">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-love-700 animate-fade-in">
-                even if the sky was filled with stars, I'd still rather see them in your eyes.
+                Even if the sky was filled with stars, I'd still rather see them in your eyes.
               </h2>
             </div>
           </CarouselItem>
